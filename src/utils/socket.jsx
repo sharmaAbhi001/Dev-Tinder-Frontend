@@ -3,14 +3,14 @@ import { _BASE_URL } from "./constent";
 
 
 
-function getCookie(name) {
-    const cookies = document.cookie.split("; ");
-    for (let cookie of cookies) {
-        let [key, value] = cookie.split("=");
-        if (key === name) return decodeURIComponent(value);
-    }
-    return null;
-}
+// function getCookie(name) {
+//     const cookies = document.cookie.split("; ");
+//     for (let cookie of cookies) {
+//         let [key, value] = cookie.split("=");
+//         if (key === name) return decodeURIComponent(value);
+//     }
+//     return null;
+// }
 
 // Token fetch karo
 
@@ -18,15 +18,15 @@ function getCookie(name) {
 
 export const createSocketConnection =()=>{
 
-    const token = getCookie("token");
-    console.log(token);
+    // const token = getCookie("token");
+    // console.log(token);
     
-    if (!token) {
-        alert("❌ No token found! Authentication failed.");
-        return null;
-    }
+    // if (!token) {
+    //     alert("❌ No token found! Authentication failed.");
+    //     return null;
+    // }
     return io(_BASE_URL,{
-        auth:{token},
+        // auth:{token},
         withCredentials:true
     })
 }

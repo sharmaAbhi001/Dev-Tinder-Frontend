@@ -62,22 +62,24 @@ const Chat = () => {
     if (!userId) return;
     const socket = createSocketConnection();
 
-    if (!socket) {
-      alert("Authentication failed! No token found.");
-      return;
-  }
+  //   if (!socket) {
+  //     alert("Authentication failed! No token found.");
+  //     return;
+  // }
 
 
 
-  socket.on("connect", () => {
-    // console.log("✅ Socket connected:", socket.id);
-    socket.emit("joinChat", { firstName, targetUserId, userId });
-});
+//   socket.on("connect", () => {
+//     // console.log("✅ Socket connected:", socket.id);
+//     socket.emit("joinChat", { firstName, targetUserId, userId });
+// });
 
-socket.on("connect_error", (err) => {
-  console.error("❌ Authentication Error:", err.message);
-  alert("Authentication failed: " + err.message);
-});
+socket.emit("joinChat", { firstName, targetUserId, userId });
+
+// socket.on("connect_error", (err) => {
+//   console.error("❌ Authentication Error:", err.message);
+//   alert("Authentication failed: " + err.message);
+// });
 
     socket.on("messageReceived", ({ firstName, text, userId }) => {   
       setMessage((prevMessages) => [
