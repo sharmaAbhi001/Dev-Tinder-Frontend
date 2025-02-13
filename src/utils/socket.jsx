@@ -1,30 +1,33 @@
 import { io } from "socket.io-client";
+import { _BASE_URL } from "./constent";
 
-export const createSocketConnection = async () => {
-    try {
-        const response = await fetch("https://devtinder-93gz.onrender.com/api/v1/auth/token", {
-            method: "GET",
-            credentials: "include", // ✅ Cookie Allow करने के लिए जरूरी
-        });
 
-        const data = await response.json();
 
-        if (!data.token) {
-            alert("❌ No token found! Authentication failed.");
-            return null;
-        }
+function getCookie(name) {
+    const cookies = document.cookie.split("; ");
+    for (let cookie of cookies) {
+        let [key, value] = cookie.split("=");
+        if (key === name) return decodeURIComponent(value);
+    }
+    return null;
+}
 
-        console.log("🔹 Token:", data.token);
+// Token fetch karo
 
-        return io("https://devtinder-93gz.onrender.com", {
-            auth: { token: data.token }, // ✅ Token भेजो
-            withCredentials: true
-        });
 
-    } catch (error) {
-        console.log("🚨 Error fetching token:", error);
-       
+
+export const createSocketConnection =()=>{
+
+    const token = getCookie("token");
+    console.log(token);
+    
+    if (!token) {
+        alert("❌ No token found! Authentication failed.");
         return null;
     }
-};
+    return io(_BASE_URL,{
+        auth:{token},
+        withCredentials:true
+    })
+}
 
