@@ -20,7 +20,7 @@ const useFeed = () => {
             dispatcher(addFeedData(response.data));
         }
        } catch (error) {
-       alert(error)
+          (error)
         
        }
 
