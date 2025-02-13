@@ -27,6 +27,7 @@ const App = () => {
         <Route path='/forget-password' element={<ForgetPassword/>} />
         <Route path='/reset-password/:token' element={<ResetPassword/>} />
       </Route>
+      
     )
   );
 

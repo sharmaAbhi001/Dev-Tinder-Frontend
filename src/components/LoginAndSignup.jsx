@@ -1,30 +1,29 @@
 import {  useEffect, useRef, useState } from "react";
 import LoginLeft from "./LoginLeft";
 import axios from "axios";
-import { addUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { _BASE_URL } from "../utils/constent";
+import Cookies from "js-cookie";
 
 const LoginAndSignup = () => {
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const FirstNameRef = useRef();
-  const LastNameRef = useRef()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const navigate = useNavigate();
   const dispatcher = useDispatch();
-  const user = useSelector(state=>state.user.user)
-
+  const user = useSelector((state) => state.user.user);
 
   useEffect(()=>{
-      if(user)
-      {
-       navigate("/")
-      }
-  },[user])
+    if(user){
+     navigate("/profile")
+    }
+   },[user])
 
   const [activeForm, setActiveForm] = useState("register");
-
 
   const showForm = (form) => {
     setActiveForm(form);
@@ -33,221 +32,177 @@ const LoginAndSignup = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     const loginData = {
-      emailId:emailRef.current.value,
-      password: passwordRef.current.value,
+      emailId: email,
+      password: password,
     };
     try {
-      const response = await axios.post(_BASE_URL+"/api/v1/login",loginData, {
+      const response = await axios.post(_BASE_URL + "/api/v1/login", loginData, {
         withCredentials: true,
         headers: {
-          "Accept": "application/json", 
+          Accept: "application/json",
         },
       });
-  
-      if (response.status === 200) {  
+
+      if (response.status === 200) {
         dispatcher(addUser(response.data));
         alert("Login Successful!");
-         navigate("/");
-      } else  {
-        alert("Login Failed hooooga: " + response.data);
+        navigate("/");
+      } else {
+        alert("Login Failed: " + response.data);
       }
     } catch (error) {
       console.log(error);
-      
       alert("Login Failed: " + (error.response?.data || "Something went wrong"));
     }
   };
 
-  const handleCreatAnAccountSubmit = async (e) =>{
+  const handleCreateAccountSubmit = async (e) => {
     e.preventDefault();
 
-    const creatAccountData = {
-      firstName:FirstNameRef.current.value,
-      lastName:LastNameRef.current.value,
-      emailId:emailRef.current.value,
-      password:passwordRef.current.value,
-    }
+    const createAccountData = {
+      firstName,
+      lastName,
+      emailId: email,
+      password,
+    };
 
     try {
-      const response = await axios.post(_BASE_URL+"/api/v1/signup",creatAccountData,{
-        headers:{
+      const response = await axios.post(_BASE_URL + "/api/v1/signup", createAccountData, {
+        headers: {
           "Content-Type": "application/json",
         },
         withCredentials: true,
       });
 
       if (response.status === 201) {
-        alert("Account create Successful!");
+        alert("Account Created Successfully!");
+        console.log(response.data);
+        dispatcher(addUser(response.data));
+        navigate("/profile");
       } else {
-        console.log("account nhi kcrea");
-        alert("Account create Failed: " + response.data.message);
+        alert("Account Creation Failed: " + response.data.message);
       }
     } catch (error) {
       console.log(error);
-      
-      alert("Account create Failede: " + (error.response?.data?.message || "Something went wrong"));
+      alert("Account Creation Failed: " + (error.response?.data?.message || "Something went wrong"));
     }
   };
 
   return (
     <div className="flex bg-blue-950">
       <div className="h-screen w-6/12">
-        <LoginLeft></LoginLeft>
+        <LoginLeft />
       </div>
-      <div className="w-6/12 flex justify-center pt-10 ">
-        <div className="w-4/6  h-full rounded-xl ">
+      <div className="w-6/12 flex justify-center pt-10">
+        <div className="w-4/6 h-full rounded-xl">
           <div className="flex-col text-center mt-6">
             <h1 className="text-white text-3xl font-bold">DevTinder</h1>
-            <p className="text-white text-xl font-sm">
-              Find your perfect coding partner
-            </p>
+            <p className="text-white text-xl font-sm">Find your perfect coding partner</p>
           </div>
 
-          {/* button for login and register  */}
           <div className="space-x-[55px] text-center mt-8">
             <button
               onClick={() => showForm("login")}
-              className={`text-white px-6 py-2 rounded-md
-             ${ activeForm === "login"
-             ?  "bg-red-700 hover:bg-red-500 transition duration-300 shadow-md"
-             : "bg-transparent"
-         }` }>
+              className={`text-white px-6 py-2 rounded-md ${
+                activeForm === "login" ? "bg-red-700 hover:bg-red-500 transition duration-300 shadow-md" : "bg-transparent"
+              }`}
+            >
               Login
             </button>
             <button
               onClick={() => showForm("register")}
-              
-              className={`text-white px-6 py-2 rounded-md
-                ${ activeForm === "register"
-                ?  "bg-red-700 hover:bg-red-500 transition duration-300 shadow-md"
-                : "bg-transparent"
-            }` }
+              className={`text-white px-6 py-2 rounded-md ${
+                activeForm === "register" ? "bg-red-700 hover:bg-red-500 transition duration-300 shadow-md" : "bg-transparent"
+              }`}
             >
               Register
             </button>
           </div>
 
-          {/* from for login */}
-
           {activeForm === "login" ? (
-            <form
-              action=""
-              onSubmit={handleLoginSubmit}
-              className="pt-8 space-y-6"
-            >
-              <div className="">
-                <label className="block font-medium text-white text-xl mb-1">
-                  Email
-                </label>
+            <form onSubmit={handleLoginSubmit} className="pt-8 space-y-6">
+              <div>
+                <label className="block font-medium text-white text-xl mb-1">Email</label>
                 <input
                   className="w-full px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                   type="email"
                   name="email"
-                  id="email"
                   required
-                  ref={emailRef}
-                  placeholder="chutiya.burchattaburkumar@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@gmail.com"
                 />
               </div>
               <div>
-                <label className="block font-medium text-white text-xl mb-1">
-                  Password
-                </label>
+                <label className="block font-medium text-white text-xl mb-1">Password</label>
                 <input
                   type="password"
                   name="password"
-                  id="password"
-                  ref={passwordRef}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="*******"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                 />
               </div>
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">
-                    Remember me
-                  </span>
-                </label>
-                <button onClick={()=>navigate("/forget-password")} className="text-sm text-purple-600 hover:text-purple-500">  Forgot password?</button>
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-200"
-              >
+              <button type="submit" className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-200">
                 Sign in
               </button>
+              <div className="text-center mt-3">
+                <Link to="/forget-password" className="text-blue-400 hover:underline">
+                  Forgot Password?
+                </Link>
+              </div>
             </form>
           ) : (
-            <form action="" onSubmit={handleCreatAnAccountSubmit} >
+            <form onSubmit={handleCreateAccountSubmit}>
               <div>
-                <label
-                  htmlFor=""
-                  className="block font-medium text-white text-xl mb-1"
-                >
-                  Firstname
-                </label>
+                <label className="block font-medium text-white text-xl mb-1">First Name</label>
                 <input
-                  type="name"
+                  type="text"
+                  name="firstName"
+                  className="w-full px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="John"
                   required
-                  name="firstName"
-                  className="w-full px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
-                  id="name1"
-                  ref={FirstNameRef}
-                  placeholder="Dubey Landchatt"
                 />
               </div>
               <div>
-                <label
-                  htmlFor=""
-                  className="block font-medium text-white text-xl mb-1"
-                >
-                  Lastname
-                </label>
+                <label className="block font-medium text-white text-xl mb-1">Last Name</label>
                 <input
-                  type="name"
-                  name="firstName"
+                  type="text"
+                  name="lastName"
                   className="w-full px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
-                  id="name2"
-                  ref={LastNameRef}
-                  placeholder="Chutiya bhi hai"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Doe"
+                  required
                 />
               </div>
-              <div className="">
-                <label className="block font-medium text-white text-xl mb-1">
-                  Email
-                </label>
+              <div>
+                <label className="block font-medium text-white text-xl mb-1">Email</label>
                 <input
                   className="w-full px-2 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                   type="email"
                   name="email"
-                  id="email"
                   required
-                  ref={emailRef}
-                  placeholder="chutiya.burchattaburkumar@gmail.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="example@gmail.com"
                 />
               </div>
               <div>
-                <label className="block font-medium text-white text-xl mb-1">
-                  Password
-                </label>
+                <label className="block font-medium text-white text-xl mb-1">Password</label>
                 <input
                   type="password"
                   name="password"
-                  id="password"
-                  ref={passwordRef}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="*******"
                   className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none"
                 />
               </div>
-
-              <button
-                type="submit"
-                className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-200 mt-4"
-              >
+              <button type="submit" className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-200 mt-4">
                 Sign up
               </button>
             </form>
@@ -259,3 +214,4 @@ const LoginAndSignup = () => {
 };
 
 export default LoginAndSignup;
+

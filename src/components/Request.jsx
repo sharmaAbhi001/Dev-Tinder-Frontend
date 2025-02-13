@@ -14,16 +14,19 @@ const Request = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setPendingRequest(response.data.intrestedUser);
+        setPendingRequest(response?.data?.intrestedUser);
       }
     } catch (error) {
-      alert(error);
+      alert(error.response.data);
     }
   };
 
   useEffect(() => {
     fetchPendingRequest();
   }, []);
+
+  console.log(pendingRequest);
+  
 
   if (!pendingRequest || pendingRequest.length === 0) {
     return <Simmer />;

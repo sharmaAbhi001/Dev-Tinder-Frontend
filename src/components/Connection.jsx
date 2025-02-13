@@ -17,13 +17,17 @@ const Connection = () => {
         dispatcher(addConnecctionData(response.data.data));
         
       } catch (error) {
-        alert(error)
+        alert(error.response.data)
       }
     }
 
     useEffect(()=>{
     fetchUserConnections();
     },[])
+
+    if ( connectionData.length === 0) {
+      return <div className="mt-8 text-center" >No Connection Found</div>
+    }
 
     if (!connectionData || connectionData.length === 0) {
         return <Simmer />;

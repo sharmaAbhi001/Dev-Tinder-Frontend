@@ -1,56 +1,55 @@
 import axios from "axios";
-import { useRef } from "react";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { _BASE_URL } from "../utils/constent";
 
-const EditProfile = () => {
-  const ageRef = useRef();
-  const genderRef = useRef();
-  const photoURLRef = useRef();
-  const bioRef = useRef();
-  const skillRef = useRef();
 
+const EditProfile = () => {
   const dispatcher = useDispatch();
   const user = useSelector((state) => state.user.user);
 
-  // patch api call here
+  // State variables for form fields
+  const [formData, setFormData] = useState({
+    age: user?.age || "",
+    gender: user?.gender || "",
+    photoURL: user?.photoURL || "",
+    bio: user?.bio || "",
+    skills: user?.skills || "",
+  });
 
-  const handelProfileEdit = async (e) => {
+  // Handle input change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // API call for updating profile
+  const handleProfileEdit = async (e) => {
     e.preventDefault();
-
-    const pathcData = {
-      age: 29,
-      gender: genderRef.current.value,
-      skills: skillRef.current.value,
-      photoURL: photoURLRef.current.value,
-      bio: bioRef.current.value,
-    };
 
     try {
       const response = await axios.patch(
-       _BASE_URL+"/api/v1/profile/update",
-        pathcData,
+        _BASE_URL + "/api/v1/profile/update",
+        formData,
         { withCredentials: true }
       );
 
       console.log(response.data);
 
-      if (response.state === 200) {
+      if (response.status === 200) {
         dispatcher(addUser(response.data));
       }
     } catch (error) {
-      alert(error.response.data.error);
+      alert(error.response?.data?.error || "Something went wrong!");
     }
   };
 
   return (
     <>
-      <div>Edit Your Profile</div>
       {user && (
         <form
-          onSubmit={handelProfileEdit}
-          className="max-w-md mx-auto p-2 bg-white shadow-md rounded-lg space-y-2 "
+          onSubmit={handleProfileEdit}
+          className="max-w-md mx-auto p-2 bg-white shadow-md rounded-lg space-y-2"
         >
           <div className="flex space-x-3">
             <div>
@@ -58,8 +57,9 @@ const EditProfile = () => {
               <input
                 type="text"
                 name="firstName"
-                placeholder={user.firstName}
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={user.firstName}
+                readOnly
+                className="w-full p-2 border rounded-lg bg-gray-100"
               />
             </div>
             <div>
@@ -67,27 +67,31 @@ const EditProfile = () => {
               <input
                 type="text"
                 name="lastName"
-                placeholder={user.lastName}
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                value={user.lastName}
+                readOnly
+                className="w-full p-2 border rounded-lg bg-gray-100"
               />
             </div>
           </div>
+
           <div>
             <label className="block text-gray-700">Email</label>
             <input
               type="email"
               name="emailId"
-              placeholder={user.emailId}
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              value={user.emailId}
+              readOnly
+              className="w-full p-2 border rounded-lg bg-gray-100"
             />
           </div>
+
           <div>
             <label className="block text-gray-700">Age</label>
             <input
-              ref={ageRef}
               type="number"
               name="age"
-              placeholder={user.age}
+              value={formData.age}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -95,23 +99,25 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700">Gender</label>
             <select
-              ref={genderRef}
               name="gender"
+              value={formData.gender}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               <option value="">Select Gender</option>
-              <option value="male">male</option>
-              <option value="female">female</option>
-              <option value="others">others</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="others">Others</option>
             </select>
           </div>
 
           <div>
             <label className="block text-gray-700">Photo URL</label>
             <input
-              ref={photoURLRef}
+              type="text"
               name="photoURL"
-              placeholder={user.photoURL}
+              value={formData.photoURL}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -119,9 +125,9 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700">Bio</label>
             <textarea
-              ref={bioRef}
               name="bio"
-              placeholder={user.bio}
+              value={formData.bio}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             ></textarea>
           </div>
@@ -129,9 +135,10 @@ const EditProfile = () => {
           <div>
             <label className="block text-gray-700">Skills</label>
             <input
-              ref={skillRef}
+              type="text"
               name="skills"
-              placeholder={user.skills}
+              value={formData.skills}
+              onChange={handleChange}
               className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>

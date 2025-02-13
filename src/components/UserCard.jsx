@@ -1,8 +1,12 @@
 import axios from "axios";
 import { motion, useMotionValue, useTransform } from "motion/react";
 import { _BASE_URL } from "../utils/constent";
+import { div } from "motion/react-client";
+import { useState } from "react";
 
 const UserCard = ({user,users, setUsers ,message}) => {
+
+  const [response,setResponse] = useState();
   const { firstName, lastName, age, bio, skills, photoURL, _id } = user;
 
 
@@ -45,7 +49,7 @@ const UserCard = ({user,users, setUsers ,message}) => {
       console.log(response);
       if(response.status===201)
       {
-        alert(response.data.message)
+          setResponse(response.data.message)
       }
       } catch (error) {
       alert(error)
@@ -58,6 +62,10 @@ const UserCard = ({user,users, setUsers ,message}) => {
 
 
   return (
+   <>
+    <div>
+      {response}
+    </div>
     <motion.div
       drag="x"
       dragConstraints={{left:0,right:0}}
@@ -78,12 +86,13 @@ const UserCard = ({user,users, setUsers ,message}) => {
           alt="Shoes"
         />
       </figure>
-      <div className="card-body  h-52 text-white">
+      <div className="card-body  h-56 text-white">
         <h2 className="card-title text-slate-50">
           {firstName}
           <div className="text-slate-50">{lastName}</div>
         </h2>
-        <p>{bio}</p>
+       <div className="flex"> <p>Bio : {bio}</p>
+       <p>Age{age}</p></div>
         <p>{skills}</p>
         <div className="card-actions justify-between">
          {message &&  <button className="btn btn-primary badge badge-secondary">
@@ -95,6 +104,7 @@ const UserCard = ({user,users, setUsers ,message}) => {
         </div>
       </div>
     </motion.div>
+   </>
   );
 };
 
