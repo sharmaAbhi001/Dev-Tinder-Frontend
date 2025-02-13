@@ -8,6 +8,7 @@ import { _BASE_URL } from "../utils/constent";
 const EditProfile = () => {
   const dispatcher = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const [error,setError]=useState("")
 
   // State variables for form fields
   const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ const EditProfile = () => {
         dispatcher(addUser(response.data));
       }
     } catch (error) {
-      alert(error.response?.data?.error || "Something went wrong!");
+      setError(error.response?.data?.error || "Something went wrong!");
     }
   };
 
@@ -149,6 +150,7 @@ const EditProfile = () => {
           >
             Submit
           </button>
+          {error}
         </form>
       )}
     </>
