@@ -15,13 +15,6 @@ const LoginAndSignup = () => {
 
   const navigate = useNavigate();
   const dispatcher = useDispatch();
-  const user = useSelector((state) => state.user.user);
-
-  useEffect(()=>{
-    if(user){
-     navigate("/profile")
-    }
-   },[user])
 
   const [activeForm, setActiveForm] = useState("register");
 

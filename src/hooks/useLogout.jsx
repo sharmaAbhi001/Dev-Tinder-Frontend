@@ -17,7 +17,6 @@ const useLogout = () => {
             method: "POST",
             credentials: "include",
           });
-    
           if (response.ok) {
             dispatcher(removeUser());
             navigate("/login");
