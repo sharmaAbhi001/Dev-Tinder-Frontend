@@ -18,14 +18,10 @@ function getCookie(name) {
 export const createSocketConnection =()=>{
 
     const token = getCookie("token");
-
-
     if (!token) {
-        alert.error("❌ No token found! Authentication failed.");
+        alert("❌ No token found! Authentication failed.");
         return null;
     }
-
-
     return io(_BASE_URL,{
         auth:{token},
         withCredentials:true
