@@ -15,6 +15,8 @@ const useFeed = () => {
         });
         if(response.status===200)
         {
+            console.log(response.data);
+            
             dispatcher(addFeedData(response.data));
         }
        } catch (error) {

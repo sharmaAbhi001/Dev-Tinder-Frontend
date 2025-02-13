@@ -4,6 +4,7 @@ import { Outlet, useNavigate, useLocation } from "react-router";
 import { addUser } from "../utils/userSlice";
 import { useEffect } from "react";
 import axios from "axios";
+import { _BASE_URL } from "../utils/constent";
 
 const Body = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Body = () => {
   const fetchData = async (user) => {
     try {
       if (user) return;
-      const response = await axios.get("http://localhost:3000/api/v1/profile/view", {
+      const response = await axios.get(_BASE_URL+"/api/v1/profile/view", {
         withCredentials: true,
       });
 

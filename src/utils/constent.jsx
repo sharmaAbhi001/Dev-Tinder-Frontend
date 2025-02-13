@@ -1,5 +1,3 @@
 
 export const _BASE_URL =
-  location.hostname === "localhost"
-    ? "http://localhost:3000"
-    : "https://yourdomain.com/api/v1";
+  "https://devtinder-93gz.onrender.com";

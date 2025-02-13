@@ -36,7 +36,7 @@ const LoginAndSignup = () => {
       password: password,
     };
     try {
-      const response = await axios.post(_BASE_URL + "/api/v1/login", loginData, {
+      const response = await axios.post(_BASE_URL+"/api/v1/login",loginData, {
         withCredentials: true,
         headers: {
           Accept: "application/json",
