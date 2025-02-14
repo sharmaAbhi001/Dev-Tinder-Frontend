@@ -1,11 +1,10 @@
-import {  useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 import LoginLeft from "./LoginLeft";
 import axios from "axios";
-import { addUser, removeUser } from "../utils/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { _BASE_URL } from "../utils/constent";
-import Cookies from "js-cookie";
 
 const LoginAndSignup = () => {
   const [email, setEmail] = useState("");
@@ -66,14 +65,12 @@ const LoginAndSignup = () => {
         },
         withCredentials: true,
       });
-
-      if (response.status === 201) {
+    if (response.status === 201) {
         alert("Account Created Successfully!");
-        console.log(response.data);
         dispatcher(addUser(response.data));
         navigate("/profile");
       } else {
-        alert("Account Creation Failed: " + response.data.message);
+        alert("Email already registerd"+response.data);
       }
     } catch (error) {
       console.log(error);

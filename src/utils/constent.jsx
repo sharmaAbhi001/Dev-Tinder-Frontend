@@ -1,3 +1,6 @@
 
 export const _BASE_URL =
-  "https://devtinder-93gz.onrender.com";
+  window.location.hostname === "localhost"
+    ? "http://localhost:3000"
+    : "https://devtinder-93gz.onrender.com";
+
