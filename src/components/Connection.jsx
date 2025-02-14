@@ -31,10 +31,6 @@ const Connection = () => {
     fetchUserConnections();
     },[])
 
-    if ( connectionData.length === 0) {
-      return <div className="mt-8 text-center" >No Connection Found</div>
-    }
-
     if (!connectionData || connectionData.length === 0) {
         return <Simmer />;
       }
