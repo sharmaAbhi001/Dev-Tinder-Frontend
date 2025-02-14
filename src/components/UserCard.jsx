@@ -21,11 +21,7 @@ const UserCard = ({user,users, setUsers ,message}) => {
 
 
   const handelEndDrag= async() => {
-    if (x.get() > 100) {
-      // onSwipeRight();
-      console.log(user._id);
-      
-
+    if (x.get() > 70) { 
       try {
         const response = await axios.post(`${_BASE_URL}/api/v1//request/send/intrested/${user._id}`,{},{
           withCredentials:true,
@@ -37,11 +33,8 @@ const UserCard = ({user,users, setUsers ,message}) => {
       }
       setUsers((pv)=>pv.filter((v)=>v._id!==_id))
 
-    } else if (x.get() < -100) {
+    } else if (x.get() < -70) {
     
-      console.log(user._id);
-      
-
       try {
         const response = await axios.post(`${_BASE_URL}/api/v1//request/send/ignored/${user._id}`,{},{
           withCredentials:true,

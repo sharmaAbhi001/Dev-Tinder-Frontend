@@ -17,8 +17,8 @@ const Navbar = () => {
         {user && (
           
           <div className="flex-none gap-4">
-            <Link to='/connection' role="button" className="btn">Connections</Link> 
-            <Link to='/request' role="button" className="btn">Requests</Link> 
+            <Link to='/connection' role="button" className="btn hidden md:block ">Connections</Link> 
+            <Link to='/request' role="button" className="btn hidden md:block">Requests</Link> 
             <div className="form-control">
               <input
                 type="text"
@@ -51,6 +51,12 @@ const Navbar = () => {
                     Profile
                     <span className="badge">New</span>
                   </Link>
+                </li>
+                <li>
+                <Link to='/connection' role="button" className=" block md:hidden">Connections</Link> 
+                </li>
+                <li>
+                <Link to='/request' role="button" className="block md:hidden">Requests</Link> 
                 </li>
                 <li>
                   <a>Settings</a>

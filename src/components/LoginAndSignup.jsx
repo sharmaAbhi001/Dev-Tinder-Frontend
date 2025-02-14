@@ -80,10 +80,10 @@ const LoginAndSignup = () => {
 
   return (
     <div className="flex bg-blue-950">
-      <div className="h-screen w-6/12">
+      <div className="h-screen hidden md:block md:w-6/12">
         <LoginLeft />
       </div>
-      <div className="w-6/12 flex justify-center pt-10">
+      <div className=" md:w-6/12 w-full flex justify-center pt-10">
         <div className="w-4/6 h-full rounded-xl">
           <div className="flex-col text-center mt-6">
             <h1 className="text-white text-3xl font-bold">DevTinder</h1>

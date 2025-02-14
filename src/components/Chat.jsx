@@ -110,62 +110,61 @@ socket.emit("joinChat", { firstName, targetUserId, userId });
   // recieved msg to everyone who is in that room
 
   return (
-    <div className="flex justify-center md:w-full h-[560px] bg-gray-100">
-      {/* Chat Box (6/12 width) */}
-      <div className="w-6/12 bg-white shadow-lg rounded-lg flex flex-col">
-        {/* Header */}
-        <div className="bg-blue-600 text-white p-4 flex space-x-32  font-semibold rounded-t-lg">
-          <h1>Chat BOx</h1>
-        </div>
+    <div className="flex justify-center items-center h-screen bg-gray-100 p-2">
+    {/* Chat Box */}
+    <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg flex flex-col h-[80vh]">
+      {/* Header */}
+      <div className="bg-blue-600 text-white p-4 flex justify-between font-semibold rounded-t-lg">
+        <h1>Chat Box</h1>
+      </div>
 
-        {/* Chat Messages */}
-        <div className="flex-1 p-4 h-[560px] overflow-y-auto space-y-3">
-          {message.map((msg, index) => (
+      {/* Chat Messages */}
+      <div className="flex-1 p-4 overflow-y-auto space-y-3">
+        {message.map((msg, index) => (
+          <div
+            key={index}
+            className={`flex flex-col ${
+              msg.userId === userId ? "items-end" : "items-start"
+            }`}
+          >
+            <div className="text-sm text-gray-500">
+              {msg.firstName}
+              <span className="text-xs opacity-50 ml-2">Just now</span>
+            </div>
             <div
-              key={index}
-              className={`chat ${
-                msg.userId === userId ? "chat-end" : "chat-start"
+              className={`px-4 py-2 rounded-lg text-white max-w-xs break-words ${
+                msg.userId === userId ? "bg-blue-500" : "bg-gray-500"
               }`}
             >
-              <div className="chat-header text-sm text-gray-300">
-                {msg.firstName}
-                <time className="text-xs opacity-50 ml-2">Just now</time>
-              </div>
-              <div
-                className={`chat-bubble ${
-                  msg.userId === userId ? "bg-blue-500" : "bg-gray-500"
-                } text-white`}
-              >
-                {msg.text}
-              </div>
-              <div className="chat-footer opacity-50 text-xs">Delivered</div>
+              {msg.text}
             </div>
-          ))}
-          {/* Scroll Target */}
-          <div ref={messagesEndRef} />
-        </div>
+            <div className="text-xs text-gray-400">Delivered</div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
 
-        {/* Input Box */}
-        <div className="p-3 border-t flex">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") sendMessage();
-            }}
-            placeholder="Type a message..."
-            className="flex-1 p-2 border rounded-lg focus:outline-none"
-          />
-          <button
-            onClick={sendMessage}
-            className="bg-blue-600 text-white px-4 py-2 ml-2 rounded-lg"
-          >
-            Send
-          </button>
-        </div>
+      {/* Input Box */}
+      <div className="p-3 border-t flex">
+        <input
+          type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") sendMessage(newMessage, setNewMessage);
+          }}
+          placeholder="Type a message..."
+          className="flex-1 p-2 border rounded-lg focus:outline-none"
+        />
+        <button
+          onClick={() => sendMessage(newMessage, setNewMessage)}
+          className="bg-blue-600 text-white px-4 py-2 ml-2 rounded-lg"
+        >
+          Send
+        </button>
       </div>
     </div>
+  </div>
   );
 };
 
