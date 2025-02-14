@@ -110,7 +110,7 @@ socket.emit("joinChat", { firstName, targetUserId, userId });
   // recieved msg to everyone who is in that room
 
   return (
-    <div className="flex justify-center  h-[560px] bg-gray-100">
+    <div className="flex justify-center md:w-full h-[560px] bg-gray-100">
       {/* Chat Box (6/12 width) */}
       <div className="w-6/12 bg-white shadow-lg rounded-lg flex flex-col">
         {/* Header */}
