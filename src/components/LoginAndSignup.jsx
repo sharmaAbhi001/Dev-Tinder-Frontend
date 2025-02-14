@@ -43,7 +43,6 @@ const LoginAndSignup = () => {
         alert("Login Failed: " + response.data);
       }
     } catch (error) {
-      console.log(error);
       alert("Login Failed: " + (error.response?.data || "Something went wrong"));
     }
   };
@@ -73,7 +72,6 @@ const LoginAndSignup = () => {
         alert("Email already registerd"+response.data);
       }
     } catch (error) {
-      console.log(error);
       alert("Account Creation Failed: " + (error.response?.data?.message || "Something went wrong"));
     }
   };

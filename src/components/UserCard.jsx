@@ -15,20 +15,18 @@ const UserCard = ({user,users, setUsers ,message}) => {
   const opacity = useTransform(x,[-150,0,150],[0,1,0]);
   const rotate = useTransform(x,[-150,150],[-18,18])
 
-  const handelIgnore = () => {
-    console.log("ignore" + _id);
-  };
-
-
   const handelEndDrag= async() => {
     if (x.get() > 70) { 
       try {
         const response = await axios.post(`${_BASE_URL}/api/v1//request/send/intrested/${user._id}`,{},{
           withCredentials:true,
       })
-      console.log(response);
+      if(response.status===201)
+        {
+            setResponse(response.data.message)
+        }
       } catch (error) {
-        console.log(error);
+        (error);
         
       }
       setUsers((pv)=>pv.filter((v)=>v._id!==_id))
@@ -39,7 +37,6 @@ const UserCard = ({user,users, setUsers ,message}) => {
         const response = await axios.post(`${_BASE_URL}/api/v1//request/send/ignored/${user._id}`,{},{
           withCredentials:true,
       })
-      console.log(response);
       if(response.status===201)
       {
           setResponse(response.data.message)
@@ -89,10 +86,10 @@ const UserCard = ({user,users, setUsers ,message}) => {
         <p>{skills}</p>
         <div className="card-actions justify-between">
          {message &&  <button className="btn btn-primary badge badge-secondary">
-            {message[0]}
+            {message[1]}
           </button>}
-          { message && <button onClick={handelIgnore} className="btn btn-primary">
-          {message[1]}
+          { message && <button className="btn btn-primary">
+          {message[0]}
           </button>}
         </div>
       </div>

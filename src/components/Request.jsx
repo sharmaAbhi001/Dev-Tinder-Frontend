@@ -24,10 +24,6 @@ const Request = () => {
   useEffect(() => {
     fetchPendingRequest();
   }, []);
-
-  console.log(pendingRequest);
-  
-
   if (!pendingRequest || pendingRequest.length === 0) {
     return <Simmer />;
   }

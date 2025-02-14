@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 
 const ConnectionCard = (data) => {
-  const {firstName,lastName,photoURL,skills,bio,age,_id} = data.data;
+  const {firstName,lastName,photoURL,skills,bio,age,_id,status} = data.data;
 
  
   return (
@@ -19,6 +19,7 @@ const ConnectionCard = (data) => {
           <p>Skilss:{skills}</p>
           <p>Bio:{bio}</p>
           <p>Age:{age}</p>
+          <p>status:{status==="online"?status+"🟢":status+"🔴"}</p>
           <div className="card-actions justify-end">
             <Link to={`/chat/${_id}`} className="btn btn-primary">Message</Link>
           </div>

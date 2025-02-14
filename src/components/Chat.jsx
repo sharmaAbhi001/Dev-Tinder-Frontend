@@ -1,16 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { createSocketConnection } from "../utils/socket";
 import axios from "axios";
 import { _BASE_URL } from "../utils/constent";
+import { DataContext } from "../utils/DataContext";
 
 const Chat = () => {
+
+  const {data} = useContext(DataContext);  
   const [newMessage, setNewMessage] = useState("");
   const [message, setMessage] = useState([]);
   const messagesEndRef = useRef(null);
   const params = useParams();
-
   const targetUserId = params.id;
   const user = useSelector((store) => store.user.user);
 
@@ -25,8 +27,9 @@ const Chat = () => {
     scrollToBottom();
   }, [message]);
 
+// find target user from context api 
 
-
+const targetUser = data.find((u) => u._id === targetUserId);
   // jaise hi page load ho purana msg load ho
 
 
@@ -115,7 +118,9 @@ socket.emit("joinChat", { firstName, targetUserId, userId });
     <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg flex flex-col h-[80vh]">
       {/* Header */}
       <div className="bg-blue-600 text-white p-4 flex justify-between font-semibold rounded-t-lg">
+        <img src={targetUser.photoURL} className="h-14 w-14 rounded-[50%]" alt="" />
         <h1>Chat Box</h1>
+        <p>status:{targetUser.status==='online'?"🟢":"🔴"}</p>
       </div>
 
       {/* Chat Messages */}

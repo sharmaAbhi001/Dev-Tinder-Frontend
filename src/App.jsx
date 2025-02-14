@@ -11,6 +11,7 @@ import Profile from './components/Profile';
 import Connection from './components/Connection';
 import Request from './components/Request';
 import Chat from './components/Chat';
+import DataProvider from './utils/DataContext';
 
 const App = () => {
 
@@ -32,11 +33,13 @@ const App = () => {
   );
 
   return (
-<Provider store={store}>  
-            <div className="App">
-                <RouterProvider router={appRouter} />
-            </div>
-        </Provider>
+<Provider store={store}>
+  <DataProvider>
+    <div className="App">
+      <RouterProvider router={appRouter} />
+    </div>
+  </DataProvider>
+</Provider>
   );
 }
 

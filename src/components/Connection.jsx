@@ -1,11 +1,16 @@
 import axios from "axios"
 import ConnectionCard from "./ConnectionCard"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Simmer from "./Simmer";
 import { useDispatch,} from "react-redux";
 import { addConnecctionData } from "../utils/connectionStore";
 import { _BASE_URL } from "../utils/constent";
+import { DataContext } from "../utils/DataContext";
+
+
 const Connection = () => {
+
+  const {setData} = useContext(DataContext);
 
     const [connectionData,setConnectionData] = useState([]);
     const dispatcher = useDispatch();
@@ -13,9 +18,10 @@ const Connection = () => {
     const fetchUserConnections = async () =>{
       try {
         const response = await axios.get(_BASE_URL+"/api/v1/user/connections",{withCredentials:true});
-        setConnectionData(response.data.data);
+        setConnectionData(response.data.data);    
         dispatcher(addConnecctionData(response.data.data));
-        
+        setData(response.data.data);
+        sessionStorage.setItem("appData",JSON.stringify(response.data.data))
       } catch (error) {
         alert(error.response.data)
       }
