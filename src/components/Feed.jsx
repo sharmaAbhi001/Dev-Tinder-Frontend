@@ -3,17 +3,23 @@ import useFeed from "../hooks/useFeed"
 import { useSelector } from "react-redux";
 import UserCard from "./UserCard";
 import Simmer from "./Simmer";
+import { useNavigate } from "react-router";
 
 
 const Feed = () => {
  
   const [message] = useState(["Intrested","Ignored"])
-  
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
   
   const feedApi =useFeed();
-  
   useEffect(()=>{
-    feedApi();
+    if(!user) {
+      navigate("/login")
+    }
+    {
+      feedApi();
+    }
   },[]);
 
   const feedData = useSelector((state) => state.feed);

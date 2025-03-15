@@ -2,7 +2,7 @@ import {  useState } from "react";
 import LoginLeft from "./LoginLeft";
 import axios from "axios";
 import { addUser } from "../utils/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { _BASE_URL } from "../utils/constent";
 
@@ -14,8 +14,15 @@ const LoginAndSignup = () => {
 
   const navigate = useNavigate();
   const dispatcher = useDispatch();
+  
+  const user = useSelector((state) => state.user.user);
 
+  if(user){
+    navigate("/")
+  }
+  
   const [activeForm, setActiveForm] = useState("register");
+
 
   const showForm = (form) => {
     setActiveForm(form);
@@ -88,7 +95,7 @@ const LoginAndSignup = () => {
             <p className="text-white text-xl font-sm">Find your perfect coding partner</p>
           </div>
 
-          <div className="space-x-[55px] text-center mt-8">
+          <div className=" md:space-x-[55px]  text-center mt-8">
             <button
               onClick={() => showForm("login")}
               className={`text-white px-6 py-2 rounded-md ${

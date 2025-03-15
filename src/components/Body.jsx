@@ -21,7 +21,6 @@ const Body = () => {
       const response = await axios.get(_BASE_URL+"/api/v1/profile/view", {
         withCredentials: true,
       });
-
       if (response.status === 200) {
         dispatcher(addUser(response.data));
       }

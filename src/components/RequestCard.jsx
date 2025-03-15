@@ -43,9 +43,9 @@ const RequestCard = ({ data, setPendingRequest }) => {
 
   return (
     <div>
-      <div className="card h-60 md:card-side bg-base-100 shadow-xl w-6/12 mx-auto my-2">
-        <figure className="w-2/6">
-          <img src={photoURL} alt="Profile" />
+      <div className="card h-auto md:h-64 md:flex-row bg-base-100 shadow-xl w-full max-w-3xl mx-auto my-2">
+        <figure className="w-full md:w-2/6 flex justify-center">
+          <img src={photoURL} alt="Profile" className="object-cover w-full h-52 md:h-auto" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{firstName + " " + lastName}</h2>

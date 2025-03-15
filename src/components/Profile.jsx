@@ -11,9 +11,10 @@ const Profile = () => {
 
   
   return (
-    <div className="flex justify-around" >
-      <EditProfile/>
+    <div className=" space-y-3 md:flex justify-around " >
+      
       {user&& <UserCard message={message} user={user}/>}
+      <EditProfile/>
     </div>
   )
 }

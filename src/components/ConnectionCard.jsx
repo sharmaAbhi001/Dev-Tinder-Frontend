@@ -10,7 +10,7 @@ const ConnectionCard = (data) => {
  
   return (
     <div className="p-4">
-      <div className="card h-auto md:h-56 md:flex-row bg-base-100 shadow-xl w-full max-w-3xl mx-auto my-2">
+      <div className="card h-auto md:h-64 md:flex-row bg-base-100 shadow-xl w-full max-w-3xl mx-auto my-2">
         <figure className="w-full md:w-2/6 flex justify-center">
           <img src={photoURL} alt="Profile" className="object-cover w-full h-52 md:h-auto" />
         </figure>
@@ -20,9 +20,9 @@ const ConnectionCard = (data) => {
           <p>Bio:{bio}</p>
           <p>Age:{age}</p>
           <p>status:{status==="online"?status+"🟢":status+"🔴"}</p>
-          <div className="card-actions justify-end">
-            <Link to={`/chat/${_id}`} className="btn btn-primary">Message</Link>
-          </div>
+           <div className=" flex justify-end ">
+           <Link to={`/chat/${_id}`} className="btn btn-primary">Message</Link>
+           </div>
         </div>
       </div>
     </div>

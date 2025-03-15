@@ -7,7 +7,7 @@ import { useState } from "react";
 const UserCard = ({user,users, setUsers ,message}) => {
 
   const [response,setResponse] = useState();
-  const { firstName, lastName, age, bio, skills, photoURL, _id } = user;
+  const { firstName, lastName, age, bio, skills, photoURL, _id, gender } = user;
 
 
   const x = useMotionValue(0);
@@ -50,6 +50,39 @@ const UserCard = ({user,users, setUsers ,message}) => {
     }
   };
 
+  const clickIgnore = async () =>{
+    try {
+      const response = await axios.post(`${_BASE_URL}/api/v1//request/send/ignored/${user._id}`,{},{
+        withCredentials:true,
+    })
+    if(response.status===201)
+    {
+        setResponse(response.data.message)
+        setUsers((pv)=>pv.filter((v)=>v._id!==_id))
+    }
+    } catch (error) {
+    alert(error)
+      
+    }
+
+  }
+
+  const clickIntrested = async () =>{
+    try {
+      const response = await axios.post(`${_BASE_URL}/api/v1//request/send/intrested/${user._id}`,{},{
+        withCredentials:true,
+    })
+    if(response.status===201)
+      {
+          setResponse(response.data.message)
+          setUsers((pv)=>pv.filter((v)=>v._id!==_id))
+      }
+    } catch (error) {
+      (error);
+      
+    }
+    
+  } 
 
   return (
    <>
@@ -60,7 +93,7 @@ const UserCard = ({user,users, setUsers ,message}) => {
       drag="x"
       dragConstraints={{left:0,right:0}}
       onDragEnd={handelEndDrag}
-      className="card bg-slate-700  w-96 "
+      className="card bg-slate-700 md:w-96  w-72 "
       style={{
         gridRow: 1,
         gridColumn: 1,
@@ -69,7 +102,7 @@ const UserCard = ({user,users, setUsers ,message}) => {
         rotate
       }}
     >
-      <figure className="h-96 w-full overflow-hidden">
+      <figure className="h-72 w-full overflow-hidden">
         <img
           className="h-full w-full object-cover"
           src={photoURL}
@@ -81,14 +114,16 @@ const UserCard = ({user,users, setUsers ,message}) => {
           {firstName}
           <div className="text-slate-50">{lastName}</div>
         </h2>
-       <div className="flex"> <p>Bio : {bio}</p>
-       <p>Age{age}</p></div>
-        <p>{skills}</p>
+       <div className="flex"> 
+        <p className="">Bio : <span>{bio}</span></p>
+       <p>Age : {age}</p></div>
+       <p>Gender : {gender}</p>
+        <p>Skilla : {skills.map((s)=>(s))}</p>
         <div className="card-actions justify-between">
-         {message &&  <button className="btn btn-primary badge badge-secondary">
+         {message &&  <button onClick={clickIgnore } className="bg-red-800 p-1 rounded-md">
             {message[1]}
           </button>}
-          { message && <button className="btn btn-primary">
+          { message && <button onClick={clickIntrested} className="bg-blue-900 p-1 rounded-md ">
           {message[0]}
           </button>}
         </div>
