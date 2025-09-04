@@ -64,18 +64,21 @@ const LoginAndSignup = () => {
       password,
     };
 
+    console.log(createAccountData)
+
     try {
-      const response = await axios.post(_BASE_URL + "/api/v1/signup", createAccountData, {
+      const response = await axios.post(_BASE_URL + "/api/v1/signup",createAccountData, {
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true,
       });
     if (response.status === 201) {
         alert("Account Created Successfully!");
         dispatcher(addUser(response.data));
         navigate("/profile");
       } else {
+        console.log(response.data)
         alert("Email already registerd"+response.data);
       }
     } catch (error) {
