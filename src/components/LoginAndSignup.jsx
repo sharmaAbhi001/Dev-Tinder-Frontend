@@ -79,7 +79,7 @@ const LoginAndSignup = () => {
         navigate("/profile");
       } else {
         console.log(response.data)
-        alert("Email already registerd"+response.data);
+        alert(response.data);
       }
     } catch (error) {
       alert("Account Creation Failed: " + (error.response?.data?.message || "Something went wrong"));
